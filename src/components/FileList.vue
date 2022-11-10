@@ -7,9 +7,12 @@ export default {
     setup(props) {
         const files = ref(props);
         const show = ref(false);
+        const search_key = ref('');
+
         return {
             files: files,
             show: show,
+            search_key: search_key
         }
     },
 
@@ -20,7 +23,9 @@ export default {
 </script>
 
 <template>
+
     <template v-for="item in files" :item="item">
+
         <template v-if="item.type == 'dir'">
             <div class="mainName">
                 <a href="#" @click="show = !show">
