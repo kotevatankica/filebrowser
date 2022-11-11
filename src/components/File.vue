@@ -14,10 +14,13 @@ export default {
         const files = ref([]);
         const starting_date = ref(null);
         const ending_date = ref(null);
+        const loaded = ref(false);
+
+        const componentKey = ref(0);
 
 
         return {
-            files: files, starting_date: starting_date, ending_date: ending_date
+            files, starting_date, ending_date,loaded,componentKey
         }
     },
     methods: {
@@ -47,6 +50,7 @@ export default {
                 }
             });
             this.files = resp.data;
+            this.loaded = true;
 
         },
 
@@ -60,6 +64,8 @@ export default {
 
         this.loaded = false;
         await this.grabData();
+        this.componentKey += 1;
+        console.log(this.files)
     }
 }
 </script>
@@ -68,15 +74,18 @@ export default {
     <div>
         <div>
             <span>Older than:</span>
-            <Datepicker v-model="starting_date" @update:modelValue="handleData" />
+            <Datepicker v-model="starting_date" @update:modelValue="handleData" :enableTimePicker="false"/>
         </div>
         <br>
         <div>
             <span>Younger than: </span>
-            <Datepicker v-model="ending_date" @update:modelValue="handleData" />
+            <Datepicker v-model="ending_date" @update:modelValue="handleData" :enableTimePicker="false" />
         </div>
     </div>
-    <FileList v-for="item in files" :item="item" />
+    <br>
+    <br>
+    <FileList :files="files" :key="componentKey"/>
+
 </template>
 
 <style scoped>

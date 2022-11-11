@@ -4,7 +4,7 @@ import FileVue from './components/File.vue';
 </script>
 
 <template>
-  <FileVue />
+  <FileVue/>
 </template>
 
 <style scoped>
