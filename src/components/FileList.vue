@@ -1,17 +1,19 @@
 <script >
 import { ref } from 'vue';
+import ShowImageVue from './ShowImage.vue';
 export default {
     name: 'file-sub-list',
-    // props: ['files','images','src'],
-
+    components: {
+        ShowImageVue
+    },
     props: {
         files: {
             type: Array,
             default: () => []
         },
-        images: {
+        image: {
             type: Array,
-            default: () => []
+            default: null
         }
     },
 
@@ -19,13 +21,12 @@ export default {
 
 
         const files = ref(props.files);
-        const show = ref(false);
         const search = ref('');
 
+
         return {
-            files: files,
-            show: show,
-            search: search
+            files,
+            search,
         }
     },
 
@@ -57,7 +58,23 @@ export default {
             else
                 item.shown = true;
 
-        }
+
+        },
+        copyLink(url) {
+
+
+            navigator.clipboard.writeText(url).then(() => {
+                this.$emit('notifyScreen', {
+                    message: `URL: ${url} saved to clipboard`,
+                    activity: 'success'
+                });
+
+            }, () => {
+                console.log('not saved');
+            });
+
+        },
+
     }
 }
 </script>
@@ -80,11 +97,10 @@ export default {
                     <div class="files"> {{ item.data.count_dir_files }} files</div>
                     <div> Size: <span> {{ item.data.get_directory_size }}</span></div>
                 </div>
-                <div v-if="item.subs && item.subs.length > 0" class="sub" :class="{ 'shown': item.shown }">
-                    <file-sub-list :files="item.subs"></file-sub-list>
-                </div>
             </div>
-
+            <div v-if="item.subs && item.subs.length > 0" class="sub" :class="{ 'shown': item.shown }">
+                <file-sub-list :files="item.subs"></file-sub-list>
+            </div>
 
         </template>
 
@@ -96,6 +112,17 @@ export default {
                     <div> Size: <span> {{ item.data.file_size }}</span></div>
                     <div><span>Last modified:</span>{{ item.data.last_modified }}</div>
                 </div>
+
+                <div class="image-preview">
+                    <a href="#" @click.prevent="copyLink(item.data.full_url)" class="link-interaction">
+                        Copy
+                    </a>
+                </div>
+
+                <div v-if="item.data.is_image" class="image-preview">
+                    <ShowImageVue :image="{ full_url: item.data.full_url, name: item.name }" />
+                </div>
+
             </div>
         </template>
 
@@ -113,6 +140,13 @@ export default {
     margin-left: 15px;
     margin-top: 9px;
     color: black;
+    width: 100%;
+}
+
+.image-preview {
+    height: 100%;
+    text-align: center;
+    padding-top: 1.5em;
 }
 
 .name {

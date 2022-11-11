@@ -20,7 +20,7 @@ export default {
 
 
         return {
-            files, starting_date, ending_date,loaded,componentKey
+            files, starting_date, ending_date, loaded, componentKey
         }
     },
     methods: {
@@ -55,6 +55,7 @@ export default {
         },
 
         async handleData() {
+            this.loaded = false;
             await this.grabData();
         }
 
@@ -65,31 +66,63 @@ export default {
         this.loaded = false;
         await this.grabData();
         this.componentKey += 1;
-        console.log(this.files)
     }
 }
 </script>
 
 <template>
-    <div>
-        <div>
-            <span>Older than:</span>
-            <Datepicker v-model="starting_date" @update:modelValue="handleData" :enableTimePicker="false"/>
+
+
+    <div class="main">
+        <div v-if="loaded">
+            <div class="datepickers">
+                <div class="data-wrap">
+                    <span>Older than:</span>
+                    <Datepicker v-model="starting_date" @update:modelValue="handleData" :enableTimePicker="false" />
+                </div>
+                <br>
+                <div class="data-wrap">
+                    <span>Younger than: </span>
+                    <Datepicker v-model="ending_date" @update:modelValue="handleData" :enableTimePicker="false" />
+                </div>
+            </div>
+            <br>
+            <br>
+            <FileList :files="files" :key="componentKey" />
         </div>
-        <br>
-        <div>
-            <span>Younger than: </span>
-            <Datepicker v-model="ending_date" @update:modelValue="handleData" :enableTimePicker="false" />
+        <div v-else>
+
+            <p class="loading">Loading data ....</p>
         </div>
     </div>
-    <br>
-    <br>
-    <FileList :files="files" :key="componentKey"/>
 
 </template>
 
 <style scoped>
-span {
+.main {
+    max-width: 100%;
+    width: 650px;
+    margin: 20px auto;
+    background: white;
+    padding: 1.3em;
+    text-align: left;
     color: black;
+}
+
+.datepickers {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1em;
+}
+
+.data-wrap {
+    flex: 1 1 0;
+
+}
+
+.loading {
+    text-align: center;
+    font-weight: 900;
+    font-size: 20px;
 }
 </style>
