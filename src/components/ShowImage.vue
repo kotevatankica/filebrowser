@@ -56,7 +56,7 @@ export default {
 <style>
 .link-interaction {
     text-align: center;
-    margin-left: 2rem;
+    margin-left: 1rem;
 
 }
 

@@ -72,7 +72,14 @@ export default {
 
 <template>
 
+    <div class="main">
 
+        <div class="footer">
+            <a href="https://adamantus.com/"><img
+                    src="https://php72.afk.mk/filebrowser/dist/assets/logo-adamantus-2022.4d63995b.svg" alt=""
+                    class="logo"></a>
+        </div>
+    </div>
     <div class="main">
         <div v-if="loaded">
             <div class="datepickers">
@@ -95,6 +102,17 @@ export default {
             <p class="loading">Loading data ....</p>
         </div>
     </div>
+    <div class="main">
+
+        <div class="footer">
+            <span>
+                © 2022 Adamantus
+            </span>
+            <span>
+                <a href="https://adamantus.com/"> adamantus.com </a>
+            </span>
+        </div>
+    </div>
 
 </template>
 
@@ -107,6 +125,10 @@ export default {
     padding: 1.3em;
     text-align: left;
     color: black;
+}
+
+.footer {
+    text-align: center;
 }
 
 .datepickers {
@@ -124,5 +146,9 @@ export default {
     text-align: center;
     font-weight: 900;
     font-size: 20px;
+}
+
+.logo {
+    height: 4rem;
 }
 </style>
